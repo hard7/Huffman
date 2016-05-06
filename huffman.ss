@@ -1,3 +1,4 @@
+; sicp ex 2.68
 ; huffman
 
 (define (append s1 s2)
