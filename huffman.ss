@@ -1,6 +1,9 @@
 ; sicp ex 2.68
 ; huffman
 
+(define (lenght s)
+    (if (null? s) 0 (+ 1 (lenght (cdr s)))))
+
 (define (append s1 s2)
     ; (if (null? s1) s2 (append (cdr s1) (cons (car s1) s2))))
     (if (null? s1) s2 (cons (car s1) (append (cdr s1) s2))))
@@ -79,7 +82,20 @@
     (cond ((= bit 0) (left-branch tree))
           ((= bit 1) (right-branch tree))
           (else (error "bad bit " bit))))
-                         
+ 
+ ; Ex 2.69
+(define (generate-huffman-tree pairs)
+    (define (successive-merge leaf-set)
+        (if (< (lenght leaf-set) 2)
+            leaf-set
+            (successive-merge 
+                (adjoin-set (make-code-tree (car leaf-set) (cadr leaf-set))
+                            (cddr leaf-set)))))
+    (successive-merge (make-leaf-set pairs)))
+
+(print (generate-huffman-tree '((A 4) (C 1) (D 1) (B 2))))
+
+; test                         
 (define sample-tree
     (make-code-tree (make-leaf 'A 4)
                     (make-code-tree (make-leaf 'B 2)
@@ -89,21 +105,6 @@
 (define some-message (list 0 1 1 0 0 1 0 1 0 1 1 1 0))
 (define message (decode some-message sample-tree))
 
-(print some-message)
-(print (encode message sample-tree))
-(print message)
-
-
-
-; (define A (make-leaf 'A 15))
-; (define B (make-leaf 'B 4))
-
-; (weight (make-code-tree A B))
-
-; (make-leaf-set (list (list 'A 3))); (list 'B 4))
-; (define tree (make-leaf-set '((A 4) (B 2) (C 1) (D 8) (E 3))))
-
-; tree
 
 
 
@@ -116,17 +117,3 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
